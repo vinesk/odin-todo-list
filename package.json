@@ -1,0 +1,29 @@
+{
+  "name": "odin-todo-list",
+  "version": "1.0.0",
+  "description": "https://www.theodinproject.com/lessons/node-path-javascript-todo-list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "webpack serve --open",
+    "sass-dev": "sass --watch --update --style=expanded ./src/scss:./dist/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinesk/odin-todo-list.git"
+  },
+  "author": "vinesk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinesk/odin-todo-list/issues"
+  },
+  "homepage": "https://github.com/vinesk/odin-todo-list#readme",
+  "devDependencies": {
+    "sass": "^1.69.7",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}

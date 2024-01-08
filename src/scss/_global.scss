@@ -1,0 +1,55 @@
+body {
+  font-size: $font-size-body;
+  font-family: $font-family-body;
+}
+
+h1 {
+  font-size: $font-size-h1;
+  font-family: $font-family-title;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: $font-size-h2;
+  font-family: $font-family-title;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: $font-size-h3;
+  font-family: $font-family-title;
+  font-weight: 700;
+}
+
+h4 {
+  font-size: $font-size-h4;
+  font-family: $font-family-title;
+  font-weight: 700;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $space-sm $space-md;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &-primary {
+    color: $white;
+    @include button-bg($color-primary);
+  }
+
+  &-secondary {
+    color: $white;
+    @include button-bg($color-secondary);
+  }
+}

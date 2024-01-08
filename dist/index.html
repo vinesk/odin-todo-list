@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <script src="https://kit.fontawesome.com/919a9ff133.js" defer></script>
+    <script src="./main.js" defer></script>
+    <title>The Odin Project - Todo List</title>
+  </head>
+  <body>
+    <div id="content">
+      <header class="header">
+        <h1><i class="fa-solid fa-check-double"></i> Todo List</h1>
+        <div id="burgerMenu">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </header>
+      <aside class="aside">
+        <section id="filters" class="section">
+          <h2>Filters</h2>
+          <div class="section__content">
+            <div class="item">
+              <div class="item__icon"><i class="fa-solid fa-inbox"></i></div>
+              <div class="item__description">All</div>
+            </div>
+            <div class="item">
+              <div class="item__icon">
+                <i class="fa-solid fa-calendar-day"></i>
+              </div>
+              <div class="item__description">Today</div>
+            </div>
+            <div class="item">
+              <div class="item__icon">
+                <i class="fa-solid fa-calendar-week"></i>
+              </div>
+              <div class="item__description">This week</div>
+            </div>
+          </div>
+        </section>
+        <section id="projects" class="section">
+          <h2>Projects</h2>
+          <div class="section__content">
+            <div class="item">
+              <div class="item__icon">
+                <i class="fa-solid fa-list-check"></i>
+              </div>
+              <div class="item__description">Project 1</div>
+              <div class="item__controls">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-trash"></i>
+              </div>
+            </div>
+          </div>
+          <button id="btnAddProject" class="btn btn-secondary">
+            Add a project
+          </button>
+          <form id="formAddProject" class="form" action="#" method="post">
+            <div class="form__fields">
+              <label for="projectTitle">Title:</label>
+              <input type="text" name="projectTitle" id="projectTitle" />
+            </div>
+            <div class="form__controls">
+              <button
+                id="btnConfirmFormAddProject"
+                class="btn btn-secondary"
+                type="submit"
+              >
+                Confirm
+              </button>
+              <button
+                id="btnResetFormAddProject"
+                class="btn btn-primary"
+                type="reset"
+              >
+                Reset
+              </button>
+            </div>
+          </form>
+        </section>
+      </aside>
+      <main class="main">
+        <section id="tasks" class="section">
+          <h2>Tasks</h2>
+          <div class="section__content">
+            <div class="item">
+              <div class="item__icon"><i class="fa-regular fa-circle"></i></div>
+              <div class="item__description">Task 1</div>
+              <div class="item__infos">
+                <div class="date">2024-01-08</div>
+                <div class="priority low">Low</div>
+              </div>
+              <div class="item__controls">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-trash"></i>
+              </div>
+            </div>
+          </div>
+          <button id="btnAddTask" class="btn btn-secondary">Add a task</button>
+          <form id="formAddTask" class="form" action="#" method="post">
+            <div class="form__fields">
+              <label for="taskTitle">Title:</label>
+              <input type="text" name="taskTitle" id="taskTitle" />
+              <label for="taskDueDate">Date:</label>
+              <input type="date" name="taskDueDate" id="taskDueDate" />
+              <label for="taskPriority">Priority</label>
+              <select name="taskPriority" id="taskPriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div class="form__controls">
+              <button
+                id="btnConfirmFormAddProject"
+                class="btn btn-secondary"
+                type="submit"
+              >
+                Confirm
+              </button>
+              <button
+                id="btnResetFormAddProject"
+                class="btn btn-primary"
+                type="reset"
+              >
+                Reset
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+      <footer class="footer">
+        <a href="https://github.com/vinesk" target="_blank">
+          <i class="fa-brands fa-github"></i> vinesk
+        </a>
+      </footer>
+    </div>
+  </body>
+</html>
