@@ -12,7 +12,13 @@
         <h1>ToDo List</h1>
       </header>
       <aside>
-        <div id="projects">
+        <section id="filter-section">
+          <h2>Filter</h2>
+          <button id="filter-all">All</button>
+          <button id="filter-today">Today</button>
+          <button id="filter-week">This week</button>
+        </section>
+        <section id="projects">
           <h2>Projects</h2>
           <ul id="project-list"></ul>
           <div>
@@ -24,7 +30,7 @@
             <button id="add-project-btn">Add Project</button>
             <p id="project-error" class="error"></p>
           </div>
-        </div>
+        </section>
       </aside>
       <main>
         <div id="tasks">

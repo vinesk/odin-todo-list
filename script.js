@@ -44,9 +44,12 @@ const taskError = document.getElementById("task-error");
 function renderProjects() {
   projectList.innerHTML = "";
   projectSelect.innerHTML = '<option value="">Select project</option>';
-  projects.forEach((project) => {
+  projects.forEach((project, index) => {
     const projectItem = document.createElement("li");
     projectItem.textContent = project.name;
+    projectItem.addEventListener("click", () => {
+      displayTasksForProject(project);
+    });
     projectList.appendChild(projectItem);
 
     const option = document.createElement("option");
@@ -67,7 +70,20 @@ function renderProjects() {
       editProject(project.name, projectItem);
     });
     projectItem.appendChild(editBtn);
+
+    if (index === 0) {
+      // Automatically select the first project created
+      projectSelect.value = project.name;
+      displayTasksForProject(project);
+    }
   });
+}
+
+function displayTasksForProject(project) {
+  const tasks = project.tasks;
+  const mainTitle = document.querySelector("main h2");
+  mainTitle.textContent = project.name;
+  renderTasks(tasks);
 }
 
 function renderTasks(tasks) {
@@ -284,6 +300,55 @@ addTaskBtn.addEventListener("click", () => {
       taskError.textContent = "Project not found";
     }
   }
+});
+
+// Fonction de filtrage des tâches
+function filterTasks(filterType) {
+  const today = new Date();
+  const todayDate = today.toISOString().split("T")[0];
+  const weekEndDate = new Date(today.setDate(today.getDate() + 6))
+    .toISOString()
+    .split("T")[0];
+
+  let filteredTasks = [];
+  if (filterType === "All") {
+    projects.forEach((project) => {
+      filteredTasks = filteredTasks.concat(project.tasks);
+    });
+  } else if (filterType === "Today") {
+    projects.forEach((project) => {
+      project.tasks.forEach((task) => {
+        if (task.dueDate === todayDate) {
+          filteredTasks.push(task);
+        }
+      });
+    });
+  } else if (filterType === "This week") {
+    projects.forEach((project) => {
+      project.tasks.forEach((task) => {
+        if (task.dueDate >= todayDate && task.dueDate <= weekEndDate) {
+          filteredTasks.push(task);
+        }
+      });
+    });
+  }
+
+  const mainTitle = document.querySelector("main h2");
+  mainTitle.textContent = filterType;
+  renderTasks(filteredTasks);
+}
+
+// Event listeners pour les filtres
+document.getElementById("filter-all").addEventListener("click", () => {
+  filterTasks("All");
+});
+
+document.getElementById("filter-today").addEventListener("click", () => {
+  filterTasks("Today");
+});
+
+document.getElementById("filter-week").addEventListener("click", () => {
+  filterTasks("This week");
 });
 
 // Initial render
