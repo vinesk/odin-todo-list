@@ -3,30 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo List</title>
+    <title>ToDo List</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
-      <div class="project-list">
-        <h2>Projects</h2>
-        <select id="projects"></select>
-        <input type="text" id="projectInput" placeholder="Enter Project Name" />
-        <button id="addProjectBtn">Add Project</button>
-      </div>
-      <div class="task-list">
-        <h2>Tasks</h2>
-        <ul id="tasks"></ul>
-        <input type="text" id="taskInput" placeholder="Enter Task Name" />
-        <input type="date" id="taskDueDate" placeholder="Due Date" />
-        <select id="taskPriority">
-          <option value="" disabled selected>Priority</option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <button id="addTaskBtn">Add Task</button>
-      </div>
+      <header>
+        <h1>ToDo List</h1>
+      </header>
+      <aside>
+        <div id="projects">
+          <h2>Projects</h2>
+          <ul id="project-list"></ul>
+          <div>
+            <input
+              type="text"
+              id="project-input"
+              placeholder="Enter project name"
+            />
+            <button id="add-project-btn">Add Project</button>
+            <p id="project-error" class="error"></p>
+          </div>
+        </div>
+      </aside>
+      <main>
+        <div id="tasks">
+          <h2>Tasks</h2>
+          <ul id="task-list"></ul>
+          <div>
+            <input type="text" id="task-input" placeholder="Enter task name" />
+            <input type="date" id="due-date-input" placeholder="Due date" />
+            <select id="priority-input">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <select id="project-select">
+              <option value="">Select project</option>
+            </select>
+            <button id="add-task-btn">Add Task</button>
+            <p id="task-error" class="error"></p>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <p>© 2024 ToDo List App</p>
+      </footer>
     </div>
     <script src="script.js"></script>
   </body>
