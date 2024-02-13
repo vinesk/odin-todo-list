@@ -5,57 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToDo List</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="https://kit.fontawesome.com/919a9ff133.js"></script>
+    <script src="script.js" defer></script>
   </head>
   <body>
+    <!-- Container -->
     <div class="container">
-      <header>
+      <!-- Header -->
+      <header class="header">
         <h1>ToDo List</h1>
       </header>
-      <aside>
-        <section id="filter-section">
-          <h2>Filter</h2>
-          <button id="filter-all">All</button>
-          <button id="filter-today">Today</button>
-          <button id="filter-week">This week</button>
-        </section>
-        <section id="projects">
-          <h2>Projects</h2>
-          <ul id="project-list"></ul>
-          <div>
-            <input
-              type="text"
-              id="project-input"
-              placeholder="Enter project name"
-            />
-            <button id="add-project-btn">Add Project</button>
-            <p id="project-error" class="error"></p>
+      <!-- Aside -->
+      <aside class="aside">
+        <!-- Filters -->
+        <section class="section" id="filters">
+          <h2 class="title">Filters</h2>
+          <div class="items">
+            <div class="item">
+              <span class="item-icon">
+                <i class="fa-solid fa-inbox"></i>
+              </span>
+              <span class="item-name">All</span>
+            </div>
+            <div class="item">
+              <span class="item-icon">
+                <i class="fa-solid fa-calendar-day"></i>
+              </span>
+              <span class="item-name">Today</span>
+            </div>
+            <div class="item">
+              <span class="item-icon">
+                <i class="fa-solid fa-calendar-week"></i>
+              </span>
+              <span class="item-name">This week</span>
+            </div>
           </div>
         </section>
+        <!-- Projects -->
+        <section class="section" id="projects">
+          <h2 class="title">Projects</h2>
+          <div class="items"></div>
+          <button class="btn-add">Add a project</button>
+          <form class="form" action="#" method="post">
+            <label for="project-name">Name:</label>
+            <input type="text" id="project-name" required />
+            <div class="form-controls">
+              <button type="submit">Confirm</button>
+              <button type="reset">Cancel</button>
+            </div>
+          </form>
+        </section>
       </aside>
-      <main>
-        <div id="tasks">
-          <h2>Tasks</h2>
-          <ul id="task-list"></ul>
-          <div>
-            <input type="text" id="task-input" placeholder="Enter task name" />
-            <input type="date" id="due-date-input" placeholder="Due date" />
-            <select id="priority-input">
+      <!-- Main -->
+      <main class="main">
+        <!-- Tasks -->
+        <section class="section" id="tasks">
+          <h2 class="title">Tasks</h2>
+          <div class="items">
+            <div class="item">
+              <span class="item-icon">
+                <i class="fa-regular fa-circle"></i>
+              </span>
+              <span class="item-name">Task 1</span>
+              <span class="item-due-date">2024-02-12</span>
+              <span class="item-priority low">Low</span>
+              <span class="edit-btn">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </span>
+              <span class="delete-btn">
+                <i class="fa-solid fa-trash"></i>
+              </span>
+            </div>
+            <div class="item">
+              <span class="item-icon">
+                <i class="fa-regular fa-circle"></i>
+              </span>
+              <span class="item-name">Task 2</span>
+              <span class="item-due-date">2024-02-14</span>
+              <span class="item-priority medium">Medium</span>
+              <span class="edit-btn">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </span>
+              <span class="delete-btn">
+                <i class="fa-solid fa-trash"></i>
+              </span>
+            </div>
+          </div>
+          <form class="form" action="#" method="post">
+            <label for="task-name">Name:</label>
+            <input type="text" id="task-name" required />
+            <label for="task-due-date">Due date:</label>
+            <input type="date" id="task-due-date" required />
+            <label for="task-priority">Priority:</label>
+            <select id="task-priority">
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </select>
-            <select id="project-select">
+            <!-- <select id="task-project-select">
               <option value="">Select project</option>
-            </select>
-            <button id="add-task-btn">Add Task</button>
-            <p id="task-error" class="error"></p>
-          </div>
-        </div>
+            </select> -->
+            <div class="form-controls">
+              <button type="submit">Confirm</button>
+              <button type="reset">Cancel</button>
+            </div>
+          </form>
+        </section>
       </main>
-      <footer>
-        <p>© 2024 ToDo List App</p>
+      <!-- Footer -->
+      <footer class="footer">
+        <a href="https://github.com/vinesk/odin-todo-list" target="_blank">
+          <i class="fa-brands fa-github"></i> vinesk
+        </a>
       </footer>
     </div>
-    <script src="script.js"></script>
   </body>
 </html>
