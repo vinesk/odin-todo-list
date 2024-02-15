@@ -46,12 +46,12 @@
           <h2 class="title">Projects</h2>
           <div class="items"></div>
           <button class="btn-add">Add a project</button>
-          <form class="form" action="#" method="post">
+          <form class="form hidden" action="#" method="post">
             <label for="project-name">Name:</label>
             <input type="text" id="project-name" required />
             <div class="form-controls">
               <button type="submit">Confirm</button>
-              <button type="reset">Cancel</button>
+              <button type="reset">Reset</button>
             </div>
           </form>
         </section>
@@ -91,7 +91,8 @@
               </span>
             </div>
           </div>
-          <form class="form" action="#" method="post">
+          <button class="btn-add">Add a task</button>
+          <form class="form hidden" action="#" method="post">
             <label for="task-name">Name:</label>
             <input type="text" id="task-name" required />
             <label for="task-due-date">Due date:</label>
@@ -102,12 +103,11 @@
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </select>
-            <!-- <select id="task-project-select">
-              <option value="">Select project</option>
-            </select> -->
+            <label for="task-project">Project:</label>
+            <select id="task-project"></select>
             <div class="form-controls">
               <button type="submit">Confirm</button>
-              <button type="reset">Cancel</button>
+              <button type="reset">Reset</button>
             </div>
           </form>
         </section>

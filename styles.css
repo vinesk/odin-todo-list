@@ -80,11 +80,13 @@ button {
 button[type="submit"] {
   color: var(--white);
   background-color: var(--color-secondary);
+  border: 1px solid var(--white);
 }
 
 button[type="reset"] {
   color: var(--white);
   background-color: var(--color-primary);
+  border: 1px solid var(--white);
 }
 
 .container {
@@ -162,6 +164,7 @@ button[type="reset"] {
   border-radius: 0.25rem;
   color: var(--white);
   display: flex;
+  align-items: center;
   gap: var(--space-sm);
   cursor: pointer;
   font-weight: 700;
@@ -229,4 +232,8 @@ button[type="reset"] {
 
 .section .form .form-controls button {
   flex: 1;
+}
+
+.section .hidden {
+  display: none;
 }

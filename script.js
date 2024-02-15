@@ -28,20 +28,35 @@ projects.push(new Project("Project 1"));
 projects.push(new Project("Project 2"));
 
 // Projects
+const projectBtnAdd = document.querySelector("#projects .btn-add");
+projectBtnAdd.addEventListener("click", () => {
+  const projectForm = document.querySelector("#projects .form");
+  projectForm.classList.toggle("hidden");
+});
+
 const projectForm = document.querySelector("#projects .form");
 projectForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
   const projectNameInput = document.querySelector("#project-name");
   const projectName = projectNameInput.value.trim();
   const project = new Project(projectName);
   projects.push(project);
   renderProjects();
   projectNameInput.value = "";
+  projectForm.classList.add("hidden");
 });
 
 function renderProjects() {
   const projectItems = document.querySelector("#projects .items");
   projectItems.innerHTML = "";
+
+  const taskProject = document.querySelector("#task-project");
+  taskProject.innerHTML = "";
+  const defaultOption = document.createElement("option");
+  defaultOption.setAttribute("value", "");
+  defaultOption.textContent = "Select a project";
+  taskProject.appendChild(defaultOption);
 
   projects.forEach((project) => {
     const projectItem = document.createElement("div");
@@ -61,7 +76,7 @@ function renderProjects() {
     editBtn.classList.add("edit-btn");
     editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
     editBtn.addEventListener("click", () => {
-      editProject(project.name, projectItem);
+      editProjectItem(projectItem, project.name);
     });
     projectItem.appendChild(editBtn);
 
@@ -69,67 +84,90 @@ function renderProjects() {
     deleteBtn.classList.add("delete-btn");
     deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
     deleteBtn.addEventListener("click", () => {
-      deleteProject(project.name);
+      deleteProjectItem(project.name);
     });
     projectItem.appendChild(deleteBtn);
 
     projectItems.appendChild(projectItem);
 
-    // projectItem.addEventListener("click", () => {
-    //   displayTasksForProject(project);
-    // });
-
-    // const option = document.createElement("option");
-    // option.textContent = project.name;
-    // option.value = project.name;
-    // taskProjectSelect.appendChild(option);
+    const option = document.createElement("option");
+    option.setAttribute("value", project.name);
+    option.textContent = project.name;
+    taskProject.appendChild(option);
   });
 }
 
-function editProject(projectName, projectItem) {
+function editProjectItem(projectItem, projectName) {
+  projectItem.innerHTML = "";
+
+  const projectItemIcon = document.createElement("span");
+  projectItemIcon.classList.add("item-icon");
+  projectItemIcon.innerHTML = `<i class="fa-solid fa-list-check"></i>`;
+  projectItem.appendChild(projectItemIcon);
+
   const input = document.createElement("input");
+  input.classList.add("item-name");
   input.type = "text";
   input.value = projectName;
+  projectItem.appendChild(input);
 
-  const saveBtn = document.createElement("button");
-  saveBtn.textContent = "Save";
-  saveBtn.addEventListener("click", () => {
-    const newName = input.value.trim();
-    if (newName !== projectName) {
-      const project = projects.find((project) => project.name === projectName);
-      if (project) {
-        project.name = newName;
-        renderProjects();
-      }
+  const checkBtn = document.createElement("span");
+  checkBtn.classList.add("check-btn");
+  checkBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+  checkBtn.addEventListener("click", () => {
+    const newProjectName = input.value.trim();
+    const project = projects.find((project) => project.name === projectName);
+    if (project) {
+      project.name = newProjectName;
     }
+    renderProjects();
   });
+  projectItem.appendChild(checkBtn);
 
-  const cancelBtn = document.createElement("button");
-  cancelBtn.textContent = "Cancel";
+  const cancelBtn = document.createElement("span");
+  cancelBtn.classList.add("cancel-btn");
+  cancelBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
   cancelBtn.addEventListener("click", () => {
     renderProjects();
   });
-
-  projectItem.innerHTML = "";
-  projectItem.appendChild(input);
-  projectItem.appendChild(saveBtn);
   projectItem.appendChild(cancelBtn);
 }
 
-function deleteProject(projectName) {
+function deleteProjectItem(projectName) {
   projects = projects.filter((project) => project.name !== projectName);
   renderProjects();
 }
 
-// function displayTasksForProject(project) {
-//   const mainTitle = document.querySelector("main h2");
-//   mainTitle.textContent = project.name;
+// Task
+const taskBtnAdd = document.querySelector("#tasks .btn-add");
+taskBtnAdd.addEventListener("click", () => {
+  const taskForm = document.querySelector("#tasks .form");
+  taskForm.classList.toggle("hidden");
+});
 
-//   const tasks = project.tasks;
-//   renderTasks(tasks);
-// }
+const taskForm = document.querySelector("#tasks .form");
+taskForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-// // Tasks
+  const taskNameInput = document.querySelector("#task-name");
+  const taskName = taskNameInput.value.trim();
+
+  const taskDueDateInput = document.querySelector("#task-due-date");
+  const taskDueDate = taskDueDateInput.value;
+
+  const taskPrioritySelect = document.querySelector("#task-priority");
+  taskPriority = taskPrioritySelect.value;
+
+  const taskProjectSelect = document.querySelector("#task-project");
+  const taskProject = taskProjectSelect.value;
+
+  // const project = new Project(projectName);
+  // projects.push(project);
+  // createTaskItems();
+  // projectNameInput.value = "";
+  // projectForm.classList.add("hidden");
+});
+
 // const taskForm = document.querySelector("#task-form");
 // const taskNameInput = document.querySelector("#task-name");
 // const taskDueDateInput = document.querySelector("#task-due-date");
@@ -164,6 +202,16 @@ function deleteProject(projectName) {
 //     }
 //   }
 // });
+
+// function displayTasksForProject(project) {
+//   const mainTitle = document.querySelector("main h2");
+//   mainTitle.textContent = project.name;
+
+//   const tasks = project.tasks;
+//   renderTasks(tasks);
+// }
+
+// // Tasks
 
 // function renderTasks(tasks) {
 //   taskList.innerHTML = "";
