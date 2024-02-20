@@ -19,189 +19,284 @@ class Task {
     this.name = name;
     this.dueDate = dueDate;
     this.priority = priority;
-    this.completed = true;
+    this.completed = false;
   }
 }
 
 // Data
-let projects = [new Project("Project 1"), new Project("Project 2")];
-let tasks = [
-  new Task("Task 1", "2024-02-18", "Low"),
-  new Task("Task 2", "2024-02-24", "Medium"),
-  new Task("Task 3", "2024-02-29", "High"),
-];
-tasks.forEach((task) => {
-  projects[0].addTask(task);
-});
+let projects = [];
+projects.push(new Project("Project 1"));
+projects.push(new Project("Project 2"));
+
+let tasks = [];
+tasks.push(new Task("Task 1", "2024-02-18", "Low"));
+tasks.push(new Task("Task 2", "2024-02-24", "Medium"));
+tasks.push(new Task("Task 3", "2024-02-28", "High"));
 
 // Functions
-function renderProjects() {
-  const projectItems = document.querySelector("#projects .items");
-  projectItems.innerHTML = "";
+function renderItems(sectionId) {
+  const items = document.querySelector(`#${sectionId} .items`);
+  items.innerHTML = "";
 
-  projects.forEach((project, index) => {
-    const projectItem = document.createElement("div");
-    projectItem.classList.add("item");
-    if (index === 0) {
-      projectItem.classList.add("selected");
+  let data;
+  switch (sectionId) {
+    case "projects":
+      data = projects;
+      break;
+    case "tasks":
+      data = tasks;
+      break;
+  }
+
+  data.forEach((input) => {
+    const item = renderItem(sectionId, input);
+    items.appendChild(item);
+  });
+}
+
+function renderItem(sectionId, input) {
+  const item = document.createElement("div");
+  item.classList.add("item");
+
+  const itemIcon = renderItemIcon(sectionId, input);
+  item.appendChild(itemIcon);
+
+  const itemName = renderItemName(input);
+  item.appendChild(itemName);
+
+  if (sectionId === "tasks") {
+    const itemDueDate = renderItemDueDate(input);
+    item.appendChild(itemDueDate);
+
+    const itemPriority = renderItemPriority(input);
+    item.appendChild(itemPriority);
+  }
+
+  const editBtn = renderEditItemBtn(sectionId, input, item);
+  item.appendChild(editBtn);
+
+  const deleteBtn = renderDeleteItemBtn(sectionId, input);
+  item.appendChild(deleteBtn);
+
+  return item;
+}
+
+function renderItemIcon(sectionId, input) {
+  const itemIcon = document.createElement("span");
+  itemIcon.classList.add("item-icon");
+  switch (sectionId) {
+    case "projects":
+      itemIcon.innerHTML = `<i class="fa-solid fa-list-check"></i>`;
+      break;
+    case "tasks":
+      if (input.completed) {
+        itemIcon.innerHTML = `<i class="fa-regular fa-circle-check"></i>`;
+      } else {
+        itemIcon.innerHTML = `<i class="fa-regular fa-circle"></i>`;
+      }
+      break;
+  }
+  return itemIcon;
+}
+
+function renderItemName(input) {
+  const itemName = document.createElement("span");
+  itemName.classList.add("item-name");
+  itemName.textContent = input.name;
+
+  return itemName;
+}
+
+function renderItemDueDate(input) {
+  const itemDueDate = document.createElement("span");
+  itemDueDate.classList.add("item-due-date");
+  itemDueDate.textContent = input.dueDate;
+
+  return itemDueDate;
+}
+
+function renderItemPriority(input) {
+  const itemPriority = document.createElement("span");
+  itemPriority.classList.add(
+    "item-priority",
+    `${input.priority.toLowerCase()}`
+  );
+  itemPriority.textContent = input.priority;
+
+  return itemPriority;
+}
+
+function renderEditItemBtn(sectionId, input, item) {
+  const editBtn = document.createElement("span");
+  editBtn.classList.add("edit-btn");
+  editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+  editBtn.addEventListener("click", () => {
+    editItem(sectionId, input, item);
+  });
+  return editBtn;
+}
+
+function editItem(sectionId, input, item) {
+  item.innerHTML = "";
+
+  const itemIcon = renderItemIcon(sectionId, input);
+  item.appendChild(itemIcon);
+
+  const nameInput = renderNameInput(input);
+  item.appendChild(nameInput);
+
+  let dueDateInput;
+  let prioritySelect;
+  if (sectionId === "tasks") {
+    dueDateInput = renderDueDateInput(input);
+    item.appendChild(dueDateInput);
+
+    prioritySelect = renderPrioritySelect(input);
+    item.appendChild(prioritySelect);
+  }
+
+  const editItemConfirmBtn = renderEditItemConfirmBtn(
+    sectionId,
+    input,
+    nameInput,
+    dueDateInput,
+    prioritySelect
+  );
+  item.appendChild(editItemConfirmBtn);
+
+  const editItemCancelBtn = renderEditItemCancelBtn(sectionId);
+  item.appendChild(editItemCancelBtn);
+}
+
+function renderNameInput(input) {
+  const nameInput = document.createElement("input");
+  nameInput.classList.add("item-name");
+  nameInput.type = "text";
+  nameInput.value = input.name;
+
+  return nameInput;
+}
+
+function renderDueDateInput(input) {
+  const dueDateInput = document.createElement("input");
+  dueDateInput.classList.add("item-due-date");
+  dueDateInput.type = "date";
+  dueDateInput.value = input.dueDate;
+
+  return dueDateInput;
+}
+
+function renderPrioritySelect(input) {
+  const prioritySelect = document.createElement("select");
+  prioritySelect.classList.add("item-priority");
+  const options = ["Low", "Medium", "High"];
+  options.forEach((option) => {
+    const prioritySelectOption = document.createElement("option");
+    prioritySelectOption.value = option.toLowerCase();
+    if (option === input.priority) {
+      prioritySelectOption.setAttribute("selected", "");
     }
-
-    const projectItemIcon = document.createElement("span");
-    projectItemIcon.classList.add("item-icon");
-    projectItemIcon.innerHTML = `<i class="fa-solid fa-list-check"></i>`;
-    projectItem.appendChild(projectItemIcon);
-
-    const projectItemName = document.createElement("span");
-    projectItemName.classList.add("item-name");
-    projectItemName.textContent = project.name;
-    projectItem.appendChild(projectItemName);
-
-    const editBtn = document.createElement("span");
-    editBtn.classList.add("edit-btn");
-    editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
-    editBtn.addEventListener("click", () => {
-      editProjectItem(projectItem, project.name);
-    });
-    projectItem.appendChild(editBtn);
-
-    const deleteBtn = document.createElement("span");
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-    deleteBtn.addEventListener("click", () => {
-      deleteProjectItem(project.name);
-    });
-    projectItem.appendChild(deleteBtn);
-
-    projectItems.appendChild(projectItem);
+    prioritySelectOption.textContent = option;
+    prioritySelect.appendChild(prioritySelectOption);
   });
+  return prioritySelect;
 }
 
-function renderTasks() {
-  const taskItems = document.querySelector("#tasks .items");
-  taskItems.innerHTML = "";
-
-  const selectedProject = projects[0];
-  const tasks = selectedProject.tasks;
-
-  tasks.forEach((task) => {
-    const taskItem = document.createElement("div");
-    taskItem.classList.add("item");
-
-    const taskItemIcon = document.createElement("span");
-    taskItemIcon.classList.add("item-icon");
-    if (!task.completed) {
-      taskItemIcon.innerHTML = `<i class="fa-regular fa-circle"></i>`;
-    } else {
-      taskItemIcon.innerHTML = `<i class="fa-regular fa-circle-check"></i>`;
+function renderEditItemConfirmBtn(
+  sectionId,
+  input,
+  nameInput,
+  dueDateInput,
+  prioritySelect
+) {
+  const editItemConfirmBtn = document.createElement("span");
+  editItemConfirmBtn.classList.add("check-btn");
+  editItemConfirmBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
+  editItemConfirmBtn.addEventListener("click", () => {
+    const newItemName = nameInput.value.trim();
+    let newItemDueDate;
+    let newItemPriority;
+    switch (sectionId) {
+      case "projects":
+        const project = projects.find((project) => (project.name = input.name));
+        project.name = newItemName;
+        break;
+      case "tasks":
+        newItemDueDate = dueDateInput.value;
+        newItemPriority = prioritySelect.value;
+        const task = tasks.find((task) => task.name === input.name);
+        task.name = newItemName;
+        task.dueDate = newItemDueDate;
+        task.priority =
+          newItemPriority[0].toUpperCase() + newItemPriority.slice(1);
+        break;
     }
-    taskItem.appendChild(taskItemIcon);
-
-    const taskItemName = document.createElement("span");
-    taskItemName.classList.add("item-name");
-    taskItemName.textContent = task.name;
-    taskItem.appendChild(taskItemName);
-
-    const taskItemDueDate = document.createElement("span");
-    taskItemDueDate.classList.add("item-due-date");
-    taskItemDueDate.textContent = task.dueDate;
-    taskItem.appendChild(taskItemDueDate);
-
-    const taskItemPriority = document.createElement("span");
-    taskItemPriority.classList.add(
-      "item-priority",
-      `${task.priority.toLowerCase()}`
-    );
-    taskItemPriority.textContent = task.priority;
-    taskItem.appendChild(taskItemPriority);
-
-    const editBtn = document.createElement("span");
-    editBtn.classList.add("edit-btn");
-    editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
-    // editBtn.addEventListener("click", () => {
-    //   editProjectItem(projectItem, project.name);
-    // });
-    taskItem.appendChild(editBtn);
-
-    const deleteBtn = document.createElement("span");
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-    // deleteBtn.addEventListener("click", () => {
-    //   deleteProjectItem(project.name);
-    // });
-    taskItem.appendChild(deleteBtn);
-
-    taskItems.appendChild(taskItem);
+    renderItems(sectionId);
   });
+  return editItemConfirmBtn;
 }
 
-function editProjectItem(projectItem, projectName) {
-  projectItem.innerHTML = "";
-
-  const projectItemIcon = document.createElement("span");
-  projectItemIcon.classList.add("item-icon");
-  projectItemIcon.innerHTML = `<i class="fa-solid fa-list-check"></i>`;
-  projectItem.appendChild(projectItemIcon);
-
-  const input = document.createElement("input");
-  input.classList.add("item-name");
-  input.type = "text";
-  input.value = projectName;
-  projectItem.appendChild(input);
-
-  const checkBtn = document.createElement("span");
-  checkBtn.classList.add("check-btn");
-  checkBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
-  checkBtn.addEventListener("click", () => {
-    const newProjectName = input.value.trim();
-    const project = projects.find((project) => project.name === projectName);
-    project.name = newProjectName;
-    renderProjects();
+function renderEditItemCancelBtn(sectionId) {
+  const editItemCancelBtn = document.createElement("span");
+  editItemCancelBtn.classList.add("check-btn");
+  editItemCancelBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+  editItemCancelBtn.addEventListener("click", () => {
+    renderItems(sectionId);
   });
-  projectItem.appendChild(checkBtn);
-
-  const cancelBtn = document.createElement("span");
-  cancelBtn.classList.add("cancel-btn");
-  cancelBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
-  cancelBtn.addEventListener("click", () => {
-    renderProjects();
-  });
-  projectItem.appendChild(cancelBtn);
+  return editItemCancelBtn;
 }
 
-function deleteProjectItem(projectName) {
-  projects = projects.filter((project) => project.name !== projectName);
-  renderProjects();
+function renderDeleteItemBtn(sectionId, input) {
+  const deleteItemBtn = document.createElement("span");
+  deleteItemBtn.classList.add("edit-btn");
+  deleteItemBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+  deleteItemBtn.addEventListener("click", () => {
+    deleteItem(sectionId, input);
+  });
+  return deleteItemBtn;
 }
 
-const projectBtnAdd = document.querySelector("#projects .btn-add");
-projectBtnAdd.addEventListener("click", () => {
-  const projectForm = document.querySelector("#projects .form");
-  projectForm.classList.toggle("hidden");
-});
+function deleteItem(sectionId, input) {
+  switch (sectionId) {
+    case "projects":
+      projects = projects.filter((project) => project.name !== input.name);
+      break;
+    case "tasks":
+      tasks = tasks.filter((task) => task.name !== input.name);
+      break;
+  }
+  renderItems(sectionId);
+}
 
-const projectForm = document.querySelector("#projects .form");
-projectForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+renderItems("projects");
+renderItems("tasks");
 
-  const projectNameInput = document.querySelector("#project-name");
-  const projectName = projectNameInput.value.trim();
-  const project = new Project(projectName);
-  projects.push(project);
-  renderProjects();
-  projectNameInput.value = "";
-  projectForm.classList.add("hidden");
-});
+// const projectBtnAdd = document.querySelector("#projects .btn-add");
+// projectBtnAdd.addEventListener("click", () => {
+//   const projectForm = document.querySelector("#projects .form");
+//   projectForm.classList.toggle("hidden");
+// });
 
-const taskBtnAdd = document.querySelector("#tasks .btn-add");
-taskBtnAdd.addEventListener("click", () => {
-  const taskForm = document.querySelector("#tasks .form");
-  taskForm.classList.toggle("hidden");
-});
+// const projectForm = document.querySelector("#projects .form");
+// projectForm.addEventListener("submit", (e) => {
+//   e.preventDefault();
 
-const taskForm = document.querySelector("#tasks .form");
-taskForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-});
+//   const projectNameInput = document.querySelector("#project-name");
+//   const projectName = projectNameInput.value.trim();
+//   const project = new Project(projectName);
+//   projects.push(project);
+//   renderProjects();
+//   projectNameInput.value = "";
+//   projectForm.classList.add("hidden");
+// });
 
-renderProjects();
-renderTasks();
+// const taskBtnAdd = document.querySelector("#tasks .btn-add");
+// taskBtnAdd.addEventListener("click", () => {
+//   const taskForm = document.querySelector("#tasks .form");
+//   taskForm.classList.toggle("hidden");
+// });
+
+// const taskForm = document.querySelector("#tasks .form");
+// taskForm.addEventListener("submit", (e) => {
+//   e.preventDefault();
+// });

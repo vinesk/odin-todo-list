@@ -180,15 +180,14 @@ button[type="reset"] {
 
 .item-due-date,
 .item-priority {
-  text-transform: uppercase;
   border: 1px solid var(--white);
   border-radius: 0.25rem;
-  padding: 0.125rem;
+  padding: 0.125rem var(--space-sm);
   font-size: calc(1rem - 2 * (1px + 0.125rem));
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
+  min-width: 4rem;
 }
 
 .item-priority.low {
