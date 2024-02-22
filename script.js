@@ -34,12 +34,12 @@ tasks.push(new Task("Task 2", "2024-02-24", "Medium"));
 tasks.push(new Task("Task 3", "2024-02-28", "High"));
 
 // Functions
-function renderItems(sectionId) {
-  const items = document.querySelector(`#${sectionId} .items`);
+function renderItems(section) {
+  const items = document.querySelector(`#${section} .items`);
   items.innerHTML = "";
 
   let data;
-  switch (sectionId) {
+  switch (section) {
     case "projects":
       data = projects;
       break;
@@ -49,22 +49,22 @@ function renderItems(sectionId) {
   }
 
   data.forEach((input) => {
-    const item = renderItem(sectionId, input);
+    const item = renderItem(section, input);
     items.appendChild(item);
   });
 }
 
-function renderItem(sectionId, input) {
+function renderItem(section, input) {
   const item = document.createElement("div");
   item.classList.add("item");
 
-  const itemIcon = renderItemIcon(sectionId, input);
+  const itemIcon = renderItemIcon(section, input);
   item.appendChild(itemIcon);
 
   const itemName = renderItemName(input);
   item.appendChild(itemName);
 
-  if (sectionId === "tasks") {
+  if (section === "tasks") {
     const itemDueDate = renderItemDueDate(input);
     item.appendChild(itemDueDate);
 
@@ -72,19 +72,19 @@ function renderItem(sectionId, input) {
     item.appendChild(itemPriority);
   }
 
-  const editBtn = renderEditItemBtn(sectionId, input, item);
+  const editBtn = renderEditItemBtn(section, input, item);
   item.appendChild(editBtn);
 
-  const deleteBtn = renderDeleteItemBtn(sectionId, input);
+  const deleteBtn = renderDeleteItemBtn(section, input);
   item.appendChild(deleteBtn);
 
   return item;
 }
 
-function renderItemIcon(sectionId, input) {
+function renderItemIcon(section, input) {
   const itemIcon = document.createElement("span");
   itemIcon.classList.add("item-icon");
-  switch (sectionId) {
+  switch (section) {
     case "projects":
       itemIcon.innerHTML = `<i class="fa-solid fa-list-check"></i>`;
       break;
@@ -126,20 +126,20 @@ function renderItemPriority(input) {
   return itemPriority;
 }
 
-function renderEditItemBtn(sectionId, input, item) {
+function renderEditItemBtn(section, input, item) {
   const editBtn = document.createElement("span");
   editBtn.classList.add("edit-btn");
   editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
   editBtn.addEventListener("click", () => {
-    editItem(sectionId, input, item);
+    editItem(section, input, item);
   });
   return editBtn;
 }
 
-function editItem(sectionId, input, item) {
+function editItem(section, input, item) {
   item.innerHTML = "";
 
-  const itemIcon = renderItemIcon(sectionId, input);
+  const itemIcon = renderItemIcon(section, input);
   item.appendChild(itemIcon);
 
   const nameInput = renderNameInput(input);
@@ -147,7 +147,7 @@ function editItem(sectionId, input, item) {
 
   let dueDateInput;
   let prioritySelect;
-  if (sectionId === "tasks") {
+  if (section === "tasks") {
     dueDateInput = renderDueDateInput(input);
     item.appendChild(dueDateInput);
 
@@ -156,7 +156,7 @@ function editItem(sectionId, input, item) {
   }
 
   const editItemConfirmBtn = renderEditItemConfirmBtn(
-    sectionId,
+    section,
     input,
     nameInput,
     dueDateInput,
@@ -164,7 +164,7 @@ function editItem(sectionId, input, item) {
   );
   item.appendChild(editItemConfirmBtn);
 
-  const editItemCancelBtn = renderEditItemCancelBtn(sectionId);
+  const editItemCancelBtn = renderEditItemCancelBtn(section);
   item.appendChild(editItemCancelBtn);
 }
 
@@ -203,7 +203,7 @@ function renderPrioritySelect(input) {
 }
 
 function renderEditItemConfirmBtn(
-  sectionId,
+  section,
   input,
   nameInput,
   dueDateInput,
@@ -216,7 +216,7 @@ function renderEditItemConfirmBtn(
     const newItemName = nameInput.value.trim();
     let newItemDueDate;
     let newItemPriority;
-    switch (sectionId) {
+    switch (section) {
       case "projects":
         const project = projects.find((project) => (project.name = input.name));
         project.name = newItemName;
@@ -231,33 +231,33 @@ function renderEditItemConfirmBtn(
           newItemPriority[0].toUpperCase() + newItemPriority.slice(1);
         break;
     }
-    renderItems(sectionId);
+    renderItems(section);
   });
   return editItemConfirmBtn;
 }
 
-function renderEditItemCancelBtn(sectionId) {
+function renderEditItemCancelBtn(section) {
   const editItemCancelBtn = document.createElement("span");
   editItemCancelBtn.classList.add("check-btn");
   editItemCancelBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
   editItemCancelBtn.addEventListener("click", () => {
-    renderItems(sectionId);
+    renderItems(section);
   });
   return editItemCancelBtn;
 }
 
-function renderDeleteItemBtn(sectionId, input) {
+function renderDeleteItemBtn(section, input) {
   const deleteItemBtn = document.createElement("span");
   deleteItemBtn.classList.add("edit-btn");
   deleteItemBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
   deleteItemBtn.addEventListener("click", () => {
-    deleteItem(sectionId, input);
+    deleteItem(section, input);
   });
   return deleteItemBtn;
 }
 
-function deleteItem(sectionId, input) {
-  switch (sectionId) {
+function deleteItem(section, input) {
+  switch (section) {
     case "projects":
       projects = projects.filter((project) => project.name !== input.name);
       break;
@@ -265,38 +265,56 @@ function deleteItem(sectionId, input) {
       tasks = tasks.filter((task) => task.name !== input.name);
       break;
   }
-  renderItems(sectionId);
+  renderItems(section);
 }
 
-renderItems("projects");
-renderItems("tasks");
+function showFormOnBtnAddClick(section) {
+  const btnAdd = document.querySelector(`#${section} .btn-add`);
+  btnAdd.addEventListener("click", () => {
+    const form = document.querySelector(`#${section} .form`);
+    form.classList.toggle("hidden");
+  });
+}
 
-// const projectBtnAdd = document.querySelector("#projects .btn-add");
-// projectBtnAdd.addEventListener("click", () => {
-//   const projectForm = document.querySelector("#projects .form");
-//   projectForm.classList.toggle("hidden");
-// });
+function addItemOnFormSubmit(section) {
+  const form = document.querySelector(`#${section} .form`);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-// const projectForm = document.querySelector("#projects .form");
-// projectForm.addEventListener("submit", (e) => {
-//   e.preventDefault();
+    const nameInput = document.querySelector(`#${section.slice(0, -1)}-name`);
+    const name = nameInput.value.trim();
 
-//   const projectNameInput = document.querySelector("#project-name");
-//   const projectName = projectNameInput.value.trim();
-//   const project = new Project(projectName);
-//   projects.push(project);
-//   renderProjects();
-//   projectNameInput.value = "";
-//   projectForm.classList.add("hidden");
-// });
+    switch (section) {
+      case "projects":
+        const project = new Project(name);
+        projects.push(project);
+        nameInput.value = "";
+        break;
+      case "tasks":
+        const dueDateInput = document.querySelector(
+          `#${section.slice(0, -1)}-due-date`
+        );
+        const dueDate = dueDateInput.value;
+        const prioritySelect = document.querySelector(
+          `#${section.slice(0, -1)}-priority`
+        );
+        const priority =
+          prioritySelect.value[0].toUpperCase() + prioritySelect.value.slice(1);
+        const task = new Task(name, dueDate, priority);
+        tasks.push(task);
+        nameInput.value = "";
+        dueDateInput.value = "";
+        prioritySelect.value = "low";
+        break;
+    }
+    renderItems(section);
+    form.classList.toggle("hidden");
+  });
+}
 
-// const taskBtnAdd = document.querySelector("#tasks .btn-add");
-// taskBtnAdd.addEventListener("click", () => {
-//   const taskForm = document.querySelector("#tasks .form");
-//   taskForm.classList.toggle("hidden");
-// });
-
-// const taskForm = document.querySelector("#tasks .form");
-// taskForm.addEventListener("submit", (e) => {
-//   e.preventDefault();
-// });
+const sections = ["projects", "tasks"];
+sections.forEach((section) => {
+  renderItems(section);
+  showFormOnBtnAddClick(section);
+  addItemOnFormSubmit(section);
+});
