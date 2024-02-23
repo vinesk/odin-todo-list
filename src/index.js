@@ -25,13 +25,17 @@ class Task {
 
 // Data
 let projects = [];
-projects.push(new Project("Project 1"));
-projects.push(new Project("Project 2"));
 
-let tasks = [];
-tasks.push(new Task("Task 1", "2024-02-18", "Low"));
-tasks.push(new Task("Task 2", "2024-02-24", "Medium"));
-tasks.push(new Task("Task 3", "2024-02-28", "High"));
+const project1 = new Project("Project 1");
+project1.addTask(new Task("Task 1", "2024-02-18", "Low"));
+project1.addTask(new Task("Task 2", "2024-02-24", "Medium"));
+project1.addTask(new Task("Task 3", "2024-02-28", "High"));
+
+const project2 = new Project("Project 2");
+project2.addTask(new Task("Task 1", "2024-02-28", "Medium"));
+
+projects.push(project1);
+projects.push(project2);
 
 // Functions
 function renderItems(section) {
@@ -44,7 +48,7 @@ function renderItems(section) {
       data = projects;
       break;
     case "tasks":
-      data = tasks;
+      data = projects[0].tasks;
       break;
   }
 
@@ -268,6 +272,18 @@ function deleteItem(section, input) {
   renderItems(section);
 }
 
+function showTasksOnProjectClick() {
+  const projects = document.querySelectorAll("#projects .item");
+  projects.forEach((project) => {
+    project.addEventListener("click", () => {
+      projects.forEach((project) => {
+        project.classList.remove("selected");
+      });
+      project.classList.add("selected");
+    });
+  });
+}
+
 function showFormOnBtnAddClick(section) {
   const btnAdd = document.querySelector(`#${section} .btn-add`);
   btnAdd.addEventListener("click", () => {
@@ -315,6 +331,7 @@ function addItemOnFormSubmit(section) {
 const sections = ["projects", "tasks"];
 sections.forEach((section) => {
   renderItems(section);
+  showTasksOnProjectClick();
   showFormOnBtnAddClick(section);
   addItemOnFormSubmit(section);
 });
