@@ -1,0 +1,242 @@
+@import url("./reset.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+:root {
+  /* Colors */
+  --color-primary: rgb(25, 130, 165);
+  --color-secondary: rgb(215, 160, 20);
+  --color-tertiary: rgb(240, 240, 240);
+  --white: rgb(255, 255, 255);
+  --black: rgb(0, 0, 0);
+  --green: green;
+  --orange: orange;
+  --red: red;
+
+  /* Font families */
+  --font-family-body: "Roboto", sans-serif;
+  --font-family-title: "Noto Serif", serif;
+
+  /* Font sizes */
+  --font-size-body: 1rem;
+  --font-size-h1: 3rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-h4: 1.25rem;
+
+  /* Spaces */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+}
+
+body {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+}
+
+h1 {
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-h1);
+  font-weight: 700;
+}
+
+h2 {
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-h2);
+  font-weight: 700;
+}
+
+h3 {
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-h3);
+  font-weight: 700;
+}
+
+h4 {
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-h4);
+  font-weight: 700;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+button {
+  padding: var(--space-sm) var(--space-lg);
+  text-transform: uppercase;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  color: var(--white);
+  background-color: var(--color-secondary);
+  border: 1px solid var(--white);
+}
+
+button[type="reset"] {
+  color: var(--white);
+  background-color: var(--color-primary);
+  border: 1px solid var(--white);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "aside main"
+    "footer footer";
+  height: 100vh;
+}
+
+.header {
+  grid-area: header;
+  background-color: var(--color-primary);
+  color: var(--white);
+  padding: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aside {
+  width: 350px;
+  grid-area: aside;
+  background-color: var(--color-tertiary);
+  color: var(--black);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.main {
+  grid-area: main;
+  background-color: var(--white);
+  color: var(--black);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.footer {
+  grid-area: footer;
+  background-color: var(--color-primary);
+  color: var(--white);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.section .title {
+  color: var(--color-secondary);
+}
+
+.section .items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.item {
+  background-color: var(--color-primary);
+  padding: var(--space-sm);
+  border-radius: 0.25rem;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.item.selected {
+  background-color: var(--color-secondary);
+}
+
+.item-name {
+  flex: 1;
+}
+
+.item-due-date,
+.item-priority {
+  border: 1px solid var(--white);
+  border-radius: 0.25rem;
+  padding: 0.125rem var(--space-sm);
+  font-size: calc(1rem - 2 * (1px + 0.125rem));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 4rem;
+}
+
+.item-priority.low {
+  background-color: var(--green);
+}
+
+.item-priority.medium {
+  background-color: var(--orange);
+}
+
+.item-priority.high {
+  background-color: var(--red);
+}
+
+.section .btn-add {
+  color: var(--white);
+  background-color: var(--color-secondary);
+}
+
+.section .form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: 0.25rem solid var(--color-secondary);
+  border-radius: 0.5rem;
+  padding: var(--space-md);
+  background-color: var(--white);
+}
+
+.section .form label {
+  font-weight: 700;
+}
+
+.section .form input,
+.section .form select {
+  margin-bottom: var(--space-xs);
+  padding: var(--space-xs);
+}
+
+.section .form .form-controls {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.section .form .form-controls button {
+  flex: 1;
+}
+
+.section .hidden {
+  display: none;
+}
