@@ -1,40 +1,18 @@
 // Classes
-class Project {
-  constructor(name) {
-    this.name = name;
-    this.tasks = [];
-  }
-
-  addTask(task) {
-    this.tasks.push(task);
-  }
-
-  removeTask(taskName) {
-    this.tasks = this.tasks.filter((task) => task.name !== taskName);
-  }
-}
-
-class Task {
-  constructor(name, dueDate, priority) {
-    this.name = name;
-    this.dueDate = dueDate;
-    this.priority = priority;
-    this.completed = false;
-  }
-}
+import Project from "./Project";
+import Task from "./Task";
 
 // Data
-let projects = [];
+const projects = [];
 
 const project1 = new Project("Project 1");
 project1.addTask(new Task("Task 1", "2024-02-18", "Low"));
 project1.addTask(new Task("Task 2", "2024-02-24", "Medium"));
 project1.addTask(new Task("Task 3", "2024-02-28", "High"));
+projects.push(project1);
 
 const project2 = new Project("Project 2");
 project2.addTask(new Task("Task 1", "2024-02-28", "Medium"));
-
-projects.push(project1);
 projects.push(project2);
 
 // Functions
@@ -42,20 +20,39 @@ function renderItems(section) {
   const items = document.querySelector(`#${section} .items`);
   items.innerHTML = "";
 
+  const data = getDataForItems(section);
+  data.forEach((input, index) => {
+    const item = renderItem(section, input);
+    if (section === "projects" && index === 0) {
+      item.classList.add("selected");
+    }
+    items.appendChild(item);
+  });
+}
+
+function getDataForItems(section) {
   let data;
   switch (section) {
     case "projects":
       data = projects;
       break;
     case "tasks":
-      data = projects[0].tasks;
+      const selectedProject = getSelectedProject();
+      data = selectedProject.tasks;
       break;
   }
+  return data;
+}
 
-  data.forEach((input) => {
-    const item = renderItem(section, input);
-    items.appendChild(item);
-  });
+function getSelectedProject() {
+  const selectedProjectName = document.querySelector(
+    `#projects .selected .item-name`
+  ).textContent;
+  const selectedProject = projects.find(
+    (project) => project.name === selectedProjectName
+  );
+
+  return selectedProject;
 }
 
 function renderItem(section, input) {
@@ -228,7 +225,10 @@ function renderEditItemConfirmBtn(
       case "tasks":
         newItemDueDate = dueDateInput.value;
         newItemPriority = prioritySelect.value;
-        const task = tasks.find((task) => task.name === input.name);
+        const selectedProject = getSelectedProject();
+        const task = selectedProject.tasks.find(
+          (task) => task.name === input.name
+        );
         task.name = newItemName;
         task.dueDate = newItemDueDate;
         task.priority =
@@ -266,20 +266,23 @@ function deleteItem(section, input) {
       projects = projects.filter((project) => project.name !== input.name);
       break;
     case "tasks":
-      tasks = tasks.filter((task) => task.name !== input.name);
+      const selectedProject = getSelectedProject();
+      selectedProject.removeTask(input.name);
       break;
   }
   renderItems(section);
 }
 
-function showTasksOnProjectClick() {
+function changeSelectedProjectOnClick() {
   const projects = document.querySelectorAll("#projects .item");
-  projects.forEach((project) => {
-    project.addEventListener("click", () => {
+  const projectNames = document.querySelectorAll("#projects .item-name");
+  projectNames.forEach((projectName, index) => {
+    projectName.addEventListener("click", () => {
       projects.forEach((project) => {
         project.classList.remove("selected");
       });
-      project.classList.add("selected");
+      projects[index].classList.add("selected");
+      renderItems("tasks");
     });
   });
 }
@@ -317,7 +320,8 @@ function addItemOnFormSubmit(section) {
         const priority =
           prioritySelect.value[0].toUpperCase() + prioritySelect.value.slice(1);
         const task = new Task(name, dueDate, priority);
-        tasks.push(task);
+        const selectedProject = getSelectedProject();
+        selectedProject.addTask(task);
         nameInput.value = "";
         dueDateInput.value = "";
         prioritySelect.value = "low";
@@ -331,7 +335,7 @@ function addItemOnFormSubmit(section) {
 const sections = ["projects", "tasks"];
 sections.forEach((section) => {
   renderItems(section);
-  showTasksOnProjectClick();
+  changeSelectedProjectOnClick();
   showFormOnBtnAddClick(section);
   addItemOnFormSubmit(section);
 });
