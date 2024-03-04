@@ -89,7 +89,7 @@ button[type="reset"] {
   border: 1px solid var(--white);
 }
 
-.container {
+#container {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr auto;
@@ -100,7 +100,7 @@ button[type="reset"] {
   height: 100vh;
 }
 
-.header {
+header {
   grid-area: header;
   background-color: var(--color-primary);
   color: var(--white);
@@ -110,7 +110,12 @@ button[type="reset"] {
   align-items: center;
 }
 
-.aside {
+#btn-aside {
+  font-size: var(--font-size-h1);
+  cursor: pointer;
+}
+
+aside {
   width: 350px;
   grid-area: aside;
   background-color: var(--color-tertiary);
@@ -121,7 +126,7 @@ button[type="reset"] {
   gap: var(--space-lg);
 }
 
-.main {
+main {
   grid-area: main;
   background-color: var(--white);
   color: var(--black);
@@ -131,7 +136,7 @@ button[type="reset"] {
   gap: var(--space-lg);
 }
 
-.footer {
+footer {
   grid-area: footer;
   background-color: var(--color-primary);
   color: var(--white);
@@ -142,17 +147,17 @@ button[type="reset"] {
   font-weight: 700;
 }
 
-.section {
+section {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
 }
 
-.section .title {
+.title {
   color: var(--color-secondary);
 }
 
-.section .items {
+.items {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -203,12 +208,12 @@ button[type="reset"] {
   background-color: var(--red);
 }
 
-.section .btn-add {
+.btn-add {
   color: var(--white);
   background-color: var(--color-secondary);
 }
 
-.section .form {
+.form {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -218,26 +223,26 @@ button[type="reset"] {
   background-color: var(--white);
 }
 
-.section .form label {
+.form label {
   font-weight: 700;
 }
 
-.section .form input,
-.section .form select {
+.form input,
+.form select {
   margin-bottom: var(--space-xs);
   padding: var(--space-xs);
 }
 
-.section .form .form-controls {
+.form .form-controls {
   display: flex;
   gap: var(--space-sm);
   margin-top: var(--space-xs);
 }
 
-.section .form .form-controls button {
+.form .form-controls button {
   flex: 1;
 }
 
-.section .hidden {
+.hidden {
   display: none;
 }
