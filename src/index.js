@@ -1,13 +1,14 @@
-import renderHeader from "./dom/renderHeader";
-import renderAside from "./dom/renderAside";
-import renderMain from "./dom/renderMain";
-import renderFooter from "./dom/renderFooter";
+import getData from "./data/getdata";
+import renderLayout from "./layout/renderLayout";
+import renderApp from "./app/renderApp";
 
-const app = (() => {
-  const container = document.querySelector(".container");
+(() => {
+  // Data
+  const projects = getData();
 
-  container.appendChild(renderHeader());
-  container.appendChild(renderAside());
-  container.appendChild(renderMain());
-  container.appendChild(renderFooter());
+  // Layout
+  renderLayout();
+
+  // App
+  renderApp(projects);
 })();
