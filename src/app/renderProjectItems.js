@@ -6,6 +6,7 @@ export default function renderProjectItems(projects) {
 
   projects.forEach((project, index) => {
     const item = renderProjectItem(project);
+    item.dataset.id = index;
 
     if (index === 0) {
       item.classList.add("selected");

@@ -3,8 +3,9 @@ function renderTaskItems(projects) {
   items.innerHTML = "";
 
   const tasks = getTasks(projects);
-  tasks.forEach((task) => {
+  tasks.forEach((task, index) => {
     const item = renderTaskItem(task);
+    item.dataset.id = index;
     items.appendChild(item);
   });
 
@@ -14,15 +15,10 @@ function renderTaskItems(projects) {
 }
 
 function getTasks(projects) {
-  const selectedProjectName = document.querySelector(
-    ".project.selected .item-name"
-  ).textContent;
+  const selectedProject = document.querySelector(".project.selected");
+  const selectedProjectId = selectedProject.getAttribute("data-id");
 
-  const selectedProject = projects.find(
-    (project) => project.name === selectedProjectName
-  );
-
-  return selectedProject.tasks;
+  return projects[selectedProjectId].tasks;
 }
 
 function renderTaskItem(task) {
