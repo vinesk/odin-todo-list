@@ -3,12 +3,4 @@ export default class Project {
     this.name = name;
     this.tasks = [];
   }
-
-  addTask(task) {
-    this.tasks.push(task);
-  }
-
-  removeTask(taskName) {
-    this.tasks = this.tasks.filter((task) => task.name !== taskName);
-  }
 }

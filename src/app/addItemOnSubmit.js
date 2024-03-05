@@ -1,9 +1,9 @@
 import Project from "../obj/Project";
 import Task from "../obj/Task";
 import renderProjectItems from "./renderProjectItems";
-import { getSelectedProject, renderTaskItems } from "./renderTaskItems";
+import { renderTaskItems, getTasks } from "./renderTaskItems";
 
-export default function addItemOnFormSubmit(projects) {
+export default function addItemOnSubmit(projects) {
   const inputs = ["project", "task"];
 
   inputs.forEach((input) => {
@@ -32,8 +32,8 @@ export default function addItemOnFormSubmit(projects) {
             prioritySelect.value.slice(1);
 
           const task = new Task(name, dueDate, priority);
-          const selectedProject = getSelectedProject(projects);
-          selectedProject.addTask(task);
+          const tasks = getTasks(projects);
+          tasks.push(task);
           nameInput.value = "";
           dueDateInput.value = "";
           prioritySelect.value = "low";

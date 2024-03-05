@@ -1,32 +1,39 @@
 function renderTaskItems(projects) {
-  const taskItems = document.querySelector("#tasks");
-  taskItems.innerHTML = "";
+  const items = document.querySelector("#tasks");
+  items.innerHTML = "";
 
-  const selectedProject = getSelectedProject(projects);
-  selectedProject.tasks.forEach((task) => {
-    const taskItem = renderTaskItem(projects, task);
-
-    taskItems.appendChild(taskItem);
+  const tasks = getTasks(projects);
+  tasks.forEach((task) => {
+    const item = renderTaskItem(task);
+    items.appendChild(item);
   });
+
+  changeItemIconOnClick(projects);
+  deleteTaskOnClick(projects);
+  editTaskOnClick(projects);
 }
 
-function getSelectedProject(projects) {
+function getTasks(projects) {
   const selectedProjectName = document.querySelector(
     ".project.selected .item-name"
   ).textContent;
 
   const selectedProject = projects.find(
-    (input) => input.name === selectedProjectName
+    (project) => project.name === selectedProjectName
   );
 
-  return selectedProject;
+  return selectedProject.tasks;
 }
 
-function renderTaskItem(projects, task) {
+function renderTaskItem(task) {
   const item = document.createElement("div");
-  item.classList.add("task", "item");
+  item.classList.add("item", "task");
 
-  const itemIcon = renderItemIcon(task, item);
+  if (task.completed) {
+    item.classList.add("completed");
+  }
+
+  const itemIcon = renderItemIcon(task);
   item.appendChild(itemIcon);
 
   const itemName = renderItemName(task);
@@ -38,37 +45,24 @@ function renderTaskItem(projects, task) {
   const itemPriority = renderItemPriority(task);
   item.appendChild(itemPriority);
 
-  const editBtn = renderEditBtn(projects, task, item);
+  const editBtn = renderEditBtn();
   item.appendChild(editBtn);
 
-  const deleteBtn = renderDeleteBtn(projects, task);
+  const deleteBtn = renderDeleteBtn();
   item.appendChild(deleteBtn);
 
   return item;
 }
 
-function renderItemIcon(task, item) {
+function renderItemIcon(task) {
   const itemIcon = document.createElement("span");
   itemIcon.classList.add("item-icon");
 
   if (task.completed) {
-    item.classList.add("completed");
     itemIcon.innerHTML = `<i class="fa-regular fa-circle-check"></i>`;
   } else {
-    item.classList.remove("completed");
     itemIcon.innerHTML = `<i class="fa-regular fa-circle"></i>`;
   }
-
-  itemIcon.addEventListener("click", () => {
-    task.completed = task.completed ? false : true;
-    if (task.completed) {
-      item.classList.add("completed");
-      itemIcon.innerHTML = `<i class="fa-regular fa-circle-check"></i>`;
-    } else {
-      item.classList.remove("completed");
-      itemIcon.innerHTML = `<i class="fa-regular fa-circle"></i>`;
-    }
-  });
 
   return itemIcon;
 }
@@ -97,52 +91,77 @@ function renderItemPriority(task) {
   return itemPriority;
 }
 
-function renderDeleteBtn(projects, task) {
+function renderEditBtn() {
+  const editBtn = document.createElement("span");
+  editBtn.classList.add("edit-btn");
+  editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+
+  return editBtn;
+}
+
+function renderDeleteBtn() {
   const deleteBtn = document.createElement("span");
   deleteBtn.classList.add("delete-btn");
   deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-  deleteBtn.addEventListener("click", () => {
-    const selectedProject = getSelectedProject(projects);
-    selectedProject.removeTask(task.name);
-    renderTaskItems(projects);
-  });
 
   return deleteBtn;
 }
 
-function renderEditBtn(projects, task, item) {
-  const editBtn = document.createElement("span");
-  editBtn.classList.add("edit-btn");
-  editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
-  editBtn.addEventListener("click", () => {
-    item.innerHTML = "";
+function changeItemIconOnClick(projects) {
+  const tasks = getTasks(projects);
+  const itemIcons = document.querySelectorAll(".task .item-icon");
 
-    const itemIcon = renderItemIcon(task, item);
-    item.appendChild(itemIcon);
-
-    const nameInput = renderNameInput(task);
-    item.appendChild(nameInput);
-
-    const dueDateInput = renderDueDateInput(task);
-    item.appendChild(dueDateInput);
-
-    const prioritySelect = renderPrioritySelect(task);
-    item.appendChild(prioritySelect);
-
-    const confirmBtn = renderConfirmBtn(
-      projects,
-      task,
-      nameInput,
-      dueDateInput,
-      prioritySelect
-    );
-    item.appendChild(confirmBtn);
-
-    const cancelBtn = renderCancelBtn(projects);
-    item.appendChild(cancelBtn);
+  itemIcons.forEach((itemIcon, index) => {
+    itemIcon.addEventListener("click", () => {
+      const task = tasks[index];
+      task.completed = task.completed ? false : true;
+      renderTaskItems(projects);
+    });
   });
+}
 
-  return editBtn;
+function deleteTaskOnClick(projects) {
+  const tasks = getTasks(projects);
+  const deleteBtns = document.querySelectorAll(".task .delete-btn");
+
+  deleteBtns.forEach((deleteBtn, index) => {
+    deleteBtn.addEventListener("click", () => {
+      tasks.splice(index, 1);
+      renderTaskItems(projects);
+    });
+  });
+}
+
+function editTaskOnClick(projects) {
+  const tasks = getTasks(projects);
+  const items = document.querySelectorAll(".task");
+  const editBtns = document.querySelectorAll(".task .edit-btn");
+
+  editBtns.forEach((editBtn, index) => {
+    editBtn.addEventListener("click", () => {
+      const task = tasks[index];
+      const item = items[index];
+      item.innerHTML = "";
+
+      const itemIcon = renderItemIcon(task);
+      item.appendChild(itemIcon);
+
+      const nameInput = renderNameInput(task);
+      item.appendChild(nameInput);
+
+      const dueDateInput = renderDueDateInput(task);
+      item.appendChild(dueDateInput);
+
+      const prioritySelect = renderPrioritySelect(task);
+      item.appendChild(prioritySelect);
+
+      const confirmBtn = renderConfirmBtn(projects, task, index);
+      item.appendChild(confirmBtn);
+
+      const cancelBtn = renderCancelBtn(projects);
+      item.appendChild(cancelBtn);
+    });
+  });
 }
 
 function renderNameInput(task) {
@@ -179,28 +198,23 @@ function renderPrioritySelect(task) {
   return prioritySelect;
 }
 
-function renderConfirmBtn(
-  projects,
-  task,
-  nameInput,
-  dueDateInput,
-  prioritySelect
-) {
+function renderConfirmBtn(projects, task, index) {
   const confirmBtn = document.createElement("span");
   confirmBtn.classList.add("confirm-btn");
   confirmBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
   confirmBtn.addEventListener("click", () => {
-    const newItemName = nameInput.value.trim();
-    const newItemDueDate = dueDateInput.value;
-    const newItemPriority = prioritySelect.value;
-    const selectedProject = getSelectedProject(projects);
-    const input = selectedProject.tasks.find(
-      (input) => input.name === task.name
-    );
-    input.name = newItemName;
-    input.dueDate = newItemDueDate;
-    input.priority =
-      newItemPriority[0].toUpperCase() + newItemPriority.slice(1);
+    const itemNames = document.querySelectorAll(".task .item-name");
+    const itemDueDates = document.querySelectorAll(".task .item-due-date");
+    const itemPriorities = document.querySelectorAll(".task .item-priority");
+
+    const newItemName = itemNames[index].value.trim();
+    const newItemDueDate = itemDueDates[index].value;
+    const newItemPriority = itemPriorities[index].value;
+
+    task.name = newItemName;
+    task.dueDate = newItemDueDate;
+    task.priority = newItemPriority[0].toUpperCase() + newItemPriority.slice(1);
+
     renderTaskItems(projects);
   });
 
@@ -209,7 +223,7 @@ function renderConfirmBtn(
 
 function renderCancelBtn(projects) {
   const cancelBtn = document.createElement("span");
-  cancelBtn.classList.add("check-btn");
+  cancelBtn.classList.add("cancel-btn");
   cancelBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
   cancelBtn.addEventListener("click", () => {
     renderTaskItems(projects);
@@ -218,4 +232,4 @@ function renderCancelBtn(projects) {
   return cancelBtn;
 }
 
-export { renderTaskItems, getSelectedProject };
+export { renderTaskItems, getTasks };

@@ -1,34 +1,38 @@
 import { renderTaskItems } from "./renderTaskItems";
 
 export default function renderProjectItems(projects) {
-  const projectItems = document.querySelector("#projects");
-  projectItems.innerHTML = "";
+  const items = document.querySelector("#projects");
+  items.innerHTML = "";
 
   projects.forEach((project, index) => {
-    const projectItem = renderProjectItem(projects, project);
+    const item = renderProjectItem(project);
 
     if (index === 0) {
-      projectItem.classList.add("selected");
+      item.classList.add("selected");
     }
 
-    projectItems.appendChild(projectItem);
+    items.appendChild(item);
   });
+
+  changeSelectedProjectOnClick(projects);
+  editProjectOnClick(projects);
+  deleteProjectOnClick(projects);
 }
 
-function renderProjectItem(projects, project) {
+function renderProjectItem(project) {
   const item = document.createElement("div");
-  item.classList.add("project", "item");
+  item.classList.add("item", "project");
 
   const itemIcon = renderItemIcon();
   item.appendChild(itemIcon);
 
-  const itemName = renderItemName(projects, project, item);
+  const itemName = renderItemName(project);
   item.appendChild(itemName);
 
-  const editBtn = renderEditBtn(projects, project, item);
+  const editBtn = renderEditBtn();
   item.appendChild(editBtn);
 
-  const deleteBtn = renderDeleteBtn(projects, project);
+  const deleteBtn = renderDeleteBtn();
   item.appendChild(deleteBtn);
 
   return item;
@@ -42,43 +46,68 @@ function renderItemIcon() {
   return itemIcon;
 }
 
-function renderItemName(projects, project, item) {
+function renderItemName(project) {
   const itemName = document.createElement("span");
   itemName.classList.add("item-name");
   itemName.textContent = project.name;
-  itemName.addEventListener("click", () => {
-    const items = document.querySelectorAll(".project");
-    items.forEach((item) => {
-      item.classList.remove("selected");
-    });
-    item.classList.add("selected");
-    renderTaskItems(projects);
-  });
 
   return itemName;
 }
 
-function renderEditBtn(projects, project, item) {
+function renderEditBtn() {
   const editBtn = document.createElement("span");
   editBtn.classList.add("edit-btn");
   editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
-  editBtn.addEventListener("click", () => {
-    item.innerHTML = "";
-
-    const itemIcon = renderItemIcon();
-    item.appendChild(itemIcon);
-
-    const nameInput = renderNameInput(project);
-    item.appendChild(nameInput);
-
-    const confirmBtn = renderConfirmBtn(projects, project, nameInput);
-    item.appendChild(confirmBtn);
-
-    const cancelBtn = renderCancelBtn(projects);
-    item.appendChild(cancelBtn);
-  });
 
   return editBtn;
+}
+
+function renderDeleteBtn() {
+  const deleteBtn = document.createElement("span");
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+
+  return deleteBtn;
+}
+
+function changeSelectedProjectOnClick(projects) {
+  const items = document.querySelectorAll(".project");
+  const itemNames = document.querySelectorAll(".project .item-name");
+
+  itemNames.forEach((itemName, index) => {
+    itemName.addEventListener("click", () => {
+      items.forEach((item) => {
+        item.classList.remove("selected");
+      });
+      items[index].classList.add("selected");
+      renderTaskItems(projects);
+    });
+  });
+}
+
+function editProjectOnClick(projects) {
+  const items = document.querySelectorAll(".project");
+  const editBtns = document.querySelectorAll(".project .edit-btn");
+
+  editBtns.forEach((editBtn, index) => {
+    editBtn.addEventListener("click", () => {
+      const project = projects[index];
+      const item = items[index];
+      item.innerHTML = "";
+
+      const itemIcon = renderItemIcon();
+      item.appendChild(itemIcon);
+
+      const nameInput = renderNameInput(project);
+      item.appendChild(nameInput);
+
+      const confirmBtn = renderConfirmBtn(projects, index);
+      item.appendChild(confirmBtn);
+
+      const cancelBtn = renderCancelBtn(projects);
+      item.appendChild(cancelBtn);
+    });
+  });
 }
 
 function renderNameInput(project) {
@@ -90,14 +119,14 @@ function renderNameInput(project) {
   return nameInput;
 }
 
-function renderConfirmBtn(projects, project, nameInput) {
+function renderConfirmBtn(projects, index) {
   const confirmBtn = document.createElement("span");
   confirmBtn.classList.add("confirm-btn");
   confirmBtn.innerHTML = `<i class="fa-solid fa-check"></i>`;
   confirmBtn.addEventListener("click", () => {
-    const newItemName = nameInput.value.trim();
-    const input = projects.find((input) => input.name === project.name);
-    input.name = newItemName;
+    const itemNames = document.querySelectorAll(".project .item-name");
+    const newItemName = itemNames[index].value.trim();
+    projects[index].name = newItemName;
     renderProjectItems(projects);
   });
 
@@ -115,15 +144,13 @@ function renderCancelBtn(projects) {
   return cancelBtn;
 }
 
-function renderDeleteBtn(projects, project) {
-  const deleteBtn = document.createElement("span");
-  deleteBtn.classList.add("delete-btn");
-  deleteBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-  deleteBtn.addEventListener("click", () => {
-    projects = projects.filter((input) => input.name !== project.name);
-    renderProjectItems(projects);
-    renderTaskItems(projects);
-  });
+function deleteProjectOnClick(projects) {
+  const deleteBtns = document.querySelectorAll(".project .delete-btn");
 
-  return deleteBtn;
+  deleteBtns.forEach((deleteBtn, index) => {
+    deleteBtn.addEventListener("click", () => {
+      projects.splice(index, 1);
+      renderProjectItems(projects);
+    });
+  });
 }

@@ -1,7 +1,7 @@
 import Project from "../obj/Project";
 import Task from "../obj/Task";
 
-export default function getData() {
+export default function data() {
   let data = [];
   const project1 = new Project("Project 1");
   project1.addTask(new Task("Task 1", "2024-02-18", "Low"));

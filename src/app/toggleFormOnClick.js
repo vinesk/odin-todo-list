@@ -1,4 +1,4 @@
-export default function toggleFormOnBtnAddClick() {
+export default function toggleFormOnClick() {
   const inputs = ["project", "task"];
   inputs.forEach((input) => {
     const btnAdd = document.querySelector(`#btn-add-${input}`);
