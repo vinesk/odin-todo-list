@@ -1,3 +1,4 @@
+import storageAvailable from "./assets/storageAvailable";
 import Project from "../obj/Project";
 import Task from "../obj/Task";
 
@@ -12,6 +13,14 @@ export default function data() {
   const project2 = new Project("Project 2");
   project2.tasks.push(new Task("Task 1", "2024-02-28", "Medium"));
   data.push(project2);
+
+  if (storageAvailable("localStorage")) {
+    // Nous pouvons utiliser localStorage
+    console.log("storage available");
+  } else {
+    // Malheureusement, localStorage n'est pas disponible
+    console.log("storage unavailable");
+  }
 
   return data;
 }
