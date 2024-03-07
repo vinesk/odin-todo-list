@@ -1,5 +1,5 @@
-import Project from "../obj/Project";
-import Task from "../obj/Task";
+import Project from "../../obj/Project";
+import Task from "../../obj/Task";
 import renderProjectItems from "./renderProjectItems";
 import { renderTaskItems, getTasks } from "./renderTaskItems";
 

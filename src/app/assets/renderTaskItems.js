@@ -1,4 +1,12 @@
+import storageAvailable from "../../data/assets/storageAvailable";
+import setStorage from "../../data/assets/setStorage";
+
 function renderTaskItems(projects) {
+  if (storageAvailable("localStorage")) {
+    localStorage.clear();
+    setStorage(projects);
+  }
+
   const items = document.querySelector("#tasks");
   items.innerHTML = "";
 

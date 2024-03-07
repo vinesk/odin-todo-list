@@ -1,6 +1,6 @@
 export default function storageAvailable(type) {
   try {
-    var storage = window[type],
+    let storage = window[type],
       x = "__storage_test__";
     storage.setItem(x, x);
     storage.removeItem(x);

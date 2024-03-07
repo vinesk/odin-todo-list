@@ -1,17 +1,14 @@
-import data from "../data/data";
-import addItemOnSubmit from "./addItemOnSubmit";
-import renderProjectItems from "./renderProjectItems";
-import { renderTaskItems } from "./renderTaskItems";
-import toggleAsideOnClick from "./toggleAsideOnClick";
-import toggleFormOnClick from "./toggleFormOnClick";
+import addItemOnSubmit from "./assets/addItemOnSubmit";
+import renderProjectItems from "./assets/renderProjectItems";
+import { renderTaskItems } from "./assets/renderTaskItems";
+import toggleAsideOnClick from "./assets/toggleAsideOnClick";
+import toggleFormOnClick from "./assets/toggleFormOnClick";
 
-export default function app() {
-  const projects = data();
-
+export default function app(data) {
   toggleFormOnClick();
   toggleAsideOnClick();
 
-  renderProjectItems(projects);
-  renderTaskItems(projects);
-  addItemOnSubmit(projects);
+  renderProjectItems(data);
+  renderTaskItems(data);
+  addItemOnSubmit(data);
 }

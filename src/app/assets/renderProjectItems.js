@@ -1,6 +1,13 @@
+import storageAvailable from "../../data/assets/storageAvailable";
+import setStorage from "../../data/assets/setStorage";
 import { renderTaskItems } from "./renderTaskItems";
 
 export default function renderProjectItems(projects) {
+  if (storageAvailable("localStorage")) {
+    localStorage.clear();
+    setStorage(projects);
+  }
+
   const items = document.querySelector("#projects");
   items.innerHTML = "";
 
