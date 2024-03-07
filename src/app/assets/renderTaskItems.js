@@ -10,16 +10,18 @@ function renderTaskItems(projects) {
   const items = document.querySelector("#tasks");
   items.innerHTML = "";
 
-  const tasks = getTasks(projects);
-  tasks.forEach((task, index) => {
-    const item = renderTaskItem(task);
-    item.dataset.id = index;
-    items.appendChild(item);
-  });
+  if (projects.length !== 0) {
+    const tasks = getTasks(projects);
+    tasks.forEach((task, index) => {
+      const item = renderTaskItem(task);
+      item.dataset.id = index;
+      items.appendChild(item);
+    });
 
-  changeItemIconOnClick(projects);
-  deleteTaskOnClick(projects);
-  editTaskOnClick(projects);
+    changeItemIconOnClick(projects);
+    deleteTaskOnClick(projects);
+    editTaskOnClick(projects);
+  }
 }
 
 function getTasks(projects) {
