@@ -6,9 +6,14 @@ import defaultData from "./assets/defaultData";
 export default function data() {
   let data;
   if (storageAvailable("localStorage")) {
-    data = localStorage.getItem("data")
-      ? getStorage()
-      : setStorage(defaultData());
+    if (
+      !localStorage.getItem("data") ||
+      localStorage.getItem("data") === "undefined"
+    ) {
+      data = setStorage(defaultData());
+    } else {
+      data = getStorage();
+    }
   } else {
     data = defaultData();
   }
